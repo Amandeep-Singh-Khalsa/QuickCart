@@ -15,11 +15,11 @@ export const useAppContext = () => {
 
 export const AppContextProvider = (props) => {
 
+    const { user,isLoaded} = useUser()
+    const { getToken } = useAuth()
     const currency = process.env.NEXT_PUBLIC_CURRENCY
     const router = useRouter()
 
-    const { user } = useUser()
-    const { getToken } = useAuth()
 
     const [products, setProducts] = useState([])
     const [userData, setUserData] = useState(false)
@@ -28,12 +28,12 @@ export const AppContextProvider = (props) => {
 
     const fetchProductData = async () => {
         try {
-            const {data} = await axios.get('/api/product/list')
+            const { data } = await axios.get('/api/product/list')
 
             if (data.success) {
                 setProducts(data.products)
-                
-            }else {
+
+            } else {
                 toast.error(data.message)
             }
         } catch (error) {
@@ -43,7 +43,7 @@ export const AppContextProvider = (props) => {
 
     const fetchUserData = async () => {
         try {
-            if (user.publicMetadata.role === 'seller') {
+            if (user?.publicMetadata.role === 'seller') {
                 setIsSeller(true)
             }
 
@@ -72,7 +72,7 @@ export const AppContextProvider = (props) => {
             cartData[itemId] = 1;
         }
         setCartItems(cartData);
-        
+
         if (user) {
             try {
                 const token = await getToken()
@@ -137,7 +137,7 @@ export const AppContextProvider = (props) => {
         if (user) {
             fetchUserData()
         }
-    }, [user])
+    }, [isLoaded, user])
 
     const value = {
         user, getToken,
