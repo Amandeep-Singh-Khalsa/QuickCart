@@ -1,4 +1,4 @@
-import { getAuth } from "@/clerk/nextjs/server";
+import { getAuth } from "@clerk/nextjs/server";
 import connectDB from "@/config/db.js";
 import Address from "@/models/Address.js";
 import { NextResponse } from "next/server";
